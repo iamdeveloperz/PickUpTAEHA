@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -80,6 +81,15 @@ public class GameManager : SingletonMonoBase<GameManager>
 
     private void CreateCard(Transform parents)
     {
+        int[] CardImages = new int[widthNumber * heightNumber];
+
+        for(int i = 0; i < widthNumber * heightNumber; ++i)
+        {
+            CardImages[i] = i / 2;
+        }
+
+        CardImages = CardImages.OrderBy(item => Random.Range(-1.0f,1.0f)).ToArray();
+
         for (int i = 0; i < widthNumber * heightNumber; ++i)
         {
             GameObject card = Instantiate(cardPrefab);
@@ -90,6 +100,9 @@ public class GameManager : SingletonMonoBase<GameManager>
 
             card.transform.position = new Vector3(x, y, 0);
             card.transform.localScale = new Vector3(cardScale, cardScale, 0);
+            
+            string cardName = "CardImage" + CardImages[i].ToString();
+            card.transform.Find("Front").GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(cardName);
         }
 
         parents.position = cardCenterValue;
