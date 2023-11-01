@@ -24,8 +24,11 @@ public class GameManager : SingletonMonoBase<GameManager>
 
     [SerializeField] private GameObject cardPrefab;
 
-    public TMP_Text timeTxt;
+    [SerializeField] private TMP_Text timeTxt;
+    [SerializeField] private TMP_Text tryTxt;
+
     private float gameTime = 30.00f;
+    private int gameTryCount = 0;
 
     private DIFFICULTY diff = DIFFICULTY.EASY;
 
@@ -129,7 +132,18 @@ public class GameManager : SingletonMonoBase<GameManager>
 
         firstCard = null;
         secondCard = null;
+
+        // 카드 매치 시도 횟수
+        this.TryTextUpdate();
     }
-    
+
+    #endregion
+
+    #region Sub Methods
+    private void TryTextUpdate()
+    {
+        ++gameTryCount;
+        tryTxt.text = "TRY : " + gameTryCount.ToString();
+    }
     #endregion
 }
