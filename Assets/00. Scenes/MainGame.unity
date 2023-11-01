@@ -618,7 +618,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeTxt: {fileID: 1329589782}
+  time: 30
   cardPrefab: {fileID: 6943440671624518502, guid: 71bfd5af1ddf3dd4ca4fb2250ac9cdc2, type: 3}
+  firstCard: {fileID: 0}
+  secondCard: {fileID: 0}
 --- !u!4 &1432329116
 Transform:
   m_ObjectHideFlags: 0
