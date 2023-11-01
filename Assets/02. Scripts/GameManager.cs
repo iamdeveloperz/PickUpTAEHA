@@ -28,6 +28,8 @@ public class GameManager : SingletonMonoBase<GameManager>
     [SerializeField] private TMP_Text timeTxt;
     [SerializeField] private TMP_Text tryTxt;
 
+    [SerializeField] public Animator TimeAnime;
+
     private float gameTime = 30.00f;
     private int gameTryCount = 0;
 
@@ -62,6 +64,7 @@ public class GameManager : SingletonMonoBase<GameManager>
     void Update()
     {
         gameTime -= Time.deltaTime;
+        TimeAnime.SetFloat("TimeNumber", gameTime);
         timeTxt.text = gameTime.ToString("N2");
 
        GameOver();
