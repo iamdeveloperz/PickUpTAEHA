@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3436220862379382313}
   - component: {fileID: 3436220862379382315}
   - component: {fileID: 3436220862379382314}
+  - component: {fileID: 1152787089458640828}
   m_Layer: 5
   m_Name: GameOverPanel
   m_TagString: Untagged
@@ -78,6 +79,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1152787089458640828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3436220862379382312}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7da7a3c65ee52446a7cfc1de6e0de9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3436220862412905079
 GameObject:
   m_ObjectHideFlags: 0
@@ -199,7 +212,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1152787089458640828}
         m_TargetAssemblyTypeName: sceneManager, Assembly-CSharp
         m_MethodName: Retry
         m_Mode: 1
@@ -407,7 +420,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1152787089458640828}
         m_TargetAssemblyTypeName: sceneManager, Assembly-CSharp
         m_MethodName: GoTitle
         m_Mode: 1
