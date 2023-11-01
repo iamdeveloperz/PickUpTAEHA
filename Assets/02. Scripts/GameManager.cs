@@ -4,6 +4,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : SingletonMonoBase<GameManager>
 {
@@ -38,19 +39,32 @@ public class GameManager : SingletonMonoBase<GameManager>
     private const float cardBlank = 1.05f;      // 카드 간격
     Vector2 cardCenterValue = new Vector2(-1.58f, -2f); // 카드 센터 조정 값
 
+    public GameObject gameoverPanel;   // 게임 오버시 나올 판넬
+
     public GameObject firstCard;
     public GameObject secondCard;
     #endregion
 
     #region Unity Methods
-    private void Start() 
+    private void Awake()
     { 
+        // 리소스 매니저를 통해 스프라이트 불러올 예정
+        //cardImages = Resources.Load<Sprite>("CardImage0")
+    }
+
+    private void Start() {
+
+        Time.timeScale = 1f;    // 게임 시작
+
+        // Update is called once per frame
         this.Initalized();
     }
     void Update()
     {
         gameTime -= Time.deltaTime;
         timeTxt.text = gameTime.ToString("N2");
+
+       GameOver();
     }
     #endregion
 
@@ -123,6 +137,7 @@ public class GameManager : SingletonMonoBase<GameManager>
             if(int.Parse(secondCardImage.Substring(secondCardImage.Length -1))%5 == 4 && 
                 int.Parse(firstCardImage.Substring(firstCardImage.Length - 1))%5==4)
             {
+                gameoverPanel.SetActive(true);
                 Time.timeScale = 0.0f;
             }
         }
@@ -138,6 +153,19 @@ public class GameManager : SingletonMonoBase<GameManager>
         // 카드 매치 시도 횟수
         this.TryTextUpdate();
     }
+
+   
+    public void GameOver()
+    {
+        if (gameTime <= 0)
+        {
+            gameoverPanel.SetActive(true);
+            Time.timeScale = 0f;
+        }
+
+    }
+   
+
 
     #endregion
 
