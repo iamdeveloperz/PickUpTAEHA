@@ -4,6 +4,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : SingletonMonoBase<GameManager>
 {
@@ -15,41 +16,55 @@ public class GameManager : SingletonMonoBase<GameManager>
         HARD
     }
     #endregion
-    public TMP_Text timeTxt;
-    public float time = 30.00f;
+
+    #region Properties
+    public float GameTime { get { return gameTime; } set { gameTime = value; } }
+    #endregion
 
     #region Member Variables
 
     [SerializeField] private GameObject cardPrefab;
-    private Sprite[] cardImages = null;
+
+    [SerializeField] private TMP_Text timeTxt;
+    [SerializeField] private TMP_Text tryTxt;
+
+    private float gameTime = 30.00f;
+    private int gameTryCount = 0;
 
     private DIFFICULTY diff = DIFFICULTY.EASY;
 
     private float cardScale = 1f;          // 카드 스케일
     private int widthNumber;        // 카드 가로 개수
     private int heightNumber;       // 카드 세로 개수
-    public GameObject firstCard;
-    public GameObject secondCard;
     private const float cardBlank = 1.05f;      // 카드 간격
     Vector2 cardCenterValue = new Vector2(-1.58f, -2f); // 카드 센터 조정 값
+
+    public GameObject gameoverPanel;   // 게임 오버시 나올 판넬
+
+    public GameObject firstCard;
+    public GameObject secondCard;
     #endregion
 
     #region Unity Methods
     private void Awake()
-    {
+    { 
         // 리소스 매니저를 통해 스프라이트 불러올 예정
         //cardImages = Resources.Load<Sprite>("CardImage0")
-
     }
 
-    private void Start() { 
-    // Update is called once per frame
-    this.Initalized();
+    private void Start() {
+
+        Time.timeScale = 1f;    // 게임 시작
+
+        // Update is called once per frame
+        this.Initalized();
     }
     void Update()
     {
-        time -= Time.deltaTime;
-        timeTxt.text = time.ToString("N2");
+        gameTime -= Time.deltaTime;
+        timeTxt.text = gameTime.ToString("N2");
+
+       GameOver();
     }
     #endregion
 
@@ -85,9 +100,7 @@ public class GameManager : SingletonMonoBase<GameManager>
         int[] CardImages = new int[widthNumber * heightNumber];
 
         for(int i = 0; i < widthNumber * heightNumber; ++i)
-        {
             CardImages[i] = i / 2;
-        }
 
         CardImages = CardImages.OrderBy(item => Random.Range(-1.0f,1.0f)).ToArray();
 
@@ -108,6 +121,7 @@ public class GameManager : SingletonMonoBase<GameManager>
 
         parents.position = cardCenterValue;
     }
+
     public void cardMatched()
     {
         string firstCardImage = firstCard.transform.Find("Front").GetComponent<SpriteRenderer>().sprite.name;
@@ -120,8 +134,10 @@ public class GameManager : SingletonMonoBase<GameManager>
             secondCard.GetComponent<Card>().DestroyCard();
 
             //카드 판별과 마찬가지로 나머지 값이 4일 때만 게임 종료
-            if(int.Parse(secondCardImage.Substring(secondCardImage.Length -1))%5 == 4 && int.Parse(firstCardImage.Substring(firstCardImage.Length - 1))%5==4)
+            if(int.Parse(secondCardImage.Substring(secondCardImage.Length -1))%5 == 4 && 
+                int.Parse(firstCardImage.Substring(firstCardImage.Length - 1))%5==4)
             {
+                gameoverPanel.SetActive(true);
                 Time.timeScale = 0.0f;
             }
         }
@@ -133,7 +149,31 @@ public class GameManager : SingletonMonoBase<GameManager>
 
         firstCard = null;
         secondCard = null;
+
+        // 카드 매치 시도 횟수
+        this.TryTextUpdate();
     }
-    
+
+   
+    public void GameOver()
+    {
+        if (gameTime <= 0)
+        {
+            gameoverPanel.SetActive(true);
+            Time.timeScale = 0f;
+        }
+
+    }
+   
+
+
+    #endregion
+
+    #region Sub Methods
+    private void TryTextUpdate()
+    {
+        ++gameTryCount;
+        tryTxt.text = "TRY : " + gameTryCount.ToString();
+    }
     #endregion
 }
