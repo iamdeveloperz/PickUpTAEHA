@@ -517,6 +517,8 @@ GameObject:
   - component: {fileID: 1329589781}
   - component: {fileID: 1329589783}
   - component: {fileID: 1329589782}
+  - component: {fileID: 1329589784}
+  - component: {fileID: 1329589785}
   m_Layer: 5
   m_Name: TimerText
   m_TagString: Untagged
@@ -641,6 +643,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1329589780}
   m_CullTransparentMesh: 1
+--- !u!95 &1329589784
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1329589780}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 6f4634f760393fb49858754d204e55ad, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1329589785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1329589780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f79f2bc2ae672f647b86a428ec2f3c0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1333593419
 GameObject:
   m_ObjectHideFlags: 0
@@ -893,7 +926,7 @@ GameObject:
   - component: {fileID: 1768810798}
   m_Layer: 0
   m_Name: Cards
-  m_TagString: Untagged
+  m_TagString: Cards
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

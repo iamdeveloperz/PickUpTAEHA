@@ -34,6 +34,7 @@ public class MainGame : MonoBehaviour
     {
         GameManager.Instance.GameTime -= Time.deltaTime;
         timeTxt.text = GameManager.Instance.GameTime.ToString("N2");
+
         if (GameManager.Instance.GameTime <= 0)
         {
             GameManager.Instance.GameOver();
@@ -51,7 +52,7 @@ public class MainGame : MonoBehaviour
         {
             case DIFFICULTY.EASY:
                 widthNumber = heightNumber = 4;
-                GameManager.Instance.GameTime = 30f;
+                GameManager.Instance.GameTime = 60f;
                 break;
             case DIFFICULTY.NORMAL:
                 widthNumber = 4;
@@ -63,11 +64,14 @@ public class MainGame : MonoBehaviour
                 // cardScale 줄여야함
                 widthNumber = 5;
                 heightNumber = 6;
+                cardCenterValue = new Vector2(-1.78f, -3.2f);
+                cardScale = 0.85f;
                 GameManager.Instance.GameTime = 50f;
                 break;
         }
 
         // 게임매니저가 알아야 될 정보 세팅
+        GameManager.Instance.SettingCards(parents.gameObject);
         GameManager.Instance.SettingGameOverPanel(gameoverPanel);
         GameManager.Instance.SettingTryText(tryTxt);
 
@@ -90,16 +94,17 @@ public class MainGame : MonoBehaviour
             card.transform.parent = parents;
 
             float x = (i % widthNumber) * cardBlank;
-            float y = (i / heightNumber) * cardBlank;
+            float y = (i / widthNumber) * cardBlank;
 
             card.transform.position = new Vector3(x, y, 0);
-            card.transform.localScale = new Vector3(cardScale, cardScale, 0);
 
             string cardName = "CardImage" + CardImages[i].ToString();
+            card.transform.name = cardName;
             card.transform.Find("Front").GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(cardName);
         }
 
         parents.position = cardCenterValue;
+        parents.localScale = new Vector3(cardScale, cardScale, 0);
     }
     #endregion
 }
