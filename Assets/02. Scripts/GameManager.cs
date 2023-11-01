@@ -54,8 +54,8 @@ public class GameManager : SingletonMonoBase<GameManager>
         if (firstCardImage == secondCardImage)
         {
 
-            firstCard.GetComponent<Card>().DestroyCard();
-            secondCard.GetComponent<Card>().DestroyCard();
+            firstCard.GetComponent<MemberCard>().DestroyCard();
+            secondCard.GetComponent<MemberCard>().DestroyCard();
 
             //카드 판별과 마찬가지로 나머지 값이 4일 때만 게임 종료
             if (int.Parse(secondCardImage.Substring(secondCardImage.Length - 1)) % 5 == 4 &&
@@ -66,8 +66,8 @@ public class GameManager : SingletonMonoBase<GameManager>
         }
         else
         {
-            firstCard.GetComponent<Card>().CloseCard();
-            secondCard.GetComponent<Card>().CloseCard();
+            firstCard.GetComponent<MemberCard>().CloseCard();
+            secondCard.GetComponent<MemberCard>().CloseCard();
         }
 
         firstCard = null;

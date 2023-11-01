@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Card : MonoBehaviour
+public class MemberCard : MonoBehaviour
 {
     public Animator anim;
 
