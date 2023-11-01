@@ -25,20 +25,26 @@ public class MainGame : MonoBehaviour
     #region Unity Methods
     private void Start()
     {
-        Time.timeScale = 1f;    // 게임 시작
+        //Time.timeScale = 1f;    // 게임 시작
+        if (!GameManager.Instance.IsAlive)
+            GameManager.Instance.IsAlive = true;
 
         this.Initalized();
     }
 
     private void Update()
     {
-        GameManager.Instance.GameTime -= Time.deltaTime;
-        timeTxt.text = GameManager.Instance.GameTime.ToString("N2");
-
-        if (GameManager.Instance.GameTime <= 0)
+        if (GameManager.Instance.IsAlive)
         {
-            GameManager.Instance.GameOver();
+            GameManager.Instance.GameTime -= Time.deltaTime;
             timeTxt.text = GameManager.Instance.GameTime.ToString("N2");
+
+            if (GameManager.Instance.GameTime <= 0)
+            {
+                GameManager.Instance.GameTime = 0f;
+                GameManager.Instance.GameOver();
+                timeTxt.text = GameManager.Instance.GameTime.ToString("N2");
+            }
         }
     }
     #endregion
@@ -52,13 +58,13 @@ public class MainGame : MonoBehaviour
         {
             case DIFFICULTY.EASY:
                 widthNumber = heightNumber = 4;
-                GameManager.Instance.GameTime = 60f;
+                GameManager.Instance.GameTime = 40f;
                 break;
             case DIFFICULTY.NORMAL:
                 widthNumber = 4;
                 heightNumber = 5;
-                cardCenterValue = new Vector2(-1.58f, -2.5f);
-                GameManager.Instance.GameTime = 40f;
+                cardCenterValue = new Vector2(-1.58f, -3f);
+                GameManager.Instance.GameTime = 50f;
                 break;
             case DIFFICULTY.HARD:
                 // cardScale 줄여야함
@@ -66,7 +72,7 @@ public class MainGame : MonoBehaviour
                 heightNumber = 6;
                 cardCenterValue = new Vector2(-1.78f, -3.2f);
                 cardScale = 0.85f;
-                GameManager.Instance.GameTime = 50f;
+                GameManager.Instance.GameTime = 90f;
                 break;
         }
 

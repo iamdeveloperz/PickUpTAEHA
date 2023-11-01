@@ -1,6 +1,7 @@
 
 using System.Collections;
 using TMPro;
+using UnityEditor.Rendering;
 using UnityEngine;
 
 public class GameManager : SingletonMonoBase<GameManager>
@@ -16,10 +17,10 @@ public class GameManager : SingletonMonoBase<GameManager>
 
     #region Properties
     public float GameTime { get { return gameTime; } set { gameTime = value; } }
-    public DIFFICULTY Difficulty { get { return diff; } }
-    public int GameTryCount { get { return gameTryCount; } set { gameTryCount = value; } }
+    public DIFFICULTY Difficulty { get { return diff; } set { diff = value; } }
     public GameObject GameoverPanel { get { return gameoverPanel; } }
     public bool IsVictory { get { return isVictory; } }
+    public bool IsAlive { get { return isAlive; } set { isAlive = value; } }
     #endregion
 
     #region Member Variables
@@ -38,6 +39,7 @@ public class GameManager : SingletonMonoBase<GameManager>
     private TMP_Text tryTxt;
 
     public const float lerpTimeValue = 0.7f;
+    private bool isAlive = true;
 
     #endregion
 
@@ -47,14 +49,15 @@ public class GameManager : SingletonMonoBase<GameManager>
     #region Main Methods
     public void GameOver()
     {
-        gameoverPanel.SetActive(true);
-        gameTime = 0f;
+        isAlive = false;
+        StartCoroutine(OnGameOverPanel());
         gameTryCount = 0;
-        Time.timeScale = 0f;
+        //Time.timeScale = 0f;
     }
 
     public void GameVictory()
     {
+        isAlive = false;
         isVictory = false;
         this.GameOver();
     }
@@ -142,6 +145,18 @@ public class GameManager : SingletonMonoBase<GameManager>
     {
         if (tryTxt == null)
             tryTxt = tryText;
+    }
+
+    public void SettingTimeScale(bool isRun = true)
+    {
+        Time.timeScale = isRun ? 1f : 0f;
+    }
+
+    private IEnumerator OnGameOverPanel()
+    {
+        yield return new WaitForSeconds(lerpTimeValue);
+
+        gameoverPanel.SetActive(true);
     }
     #endregion
 }
