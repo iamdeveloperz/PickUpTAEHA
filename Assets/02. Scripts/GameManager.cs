@@ -4,6 +4,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : SingletonMonoBase<GameManager>
 {
@@ -32,24 +33,30 @@ public class GameManager : SingletonMonoBase<GameManager>
     public GameObject secondCard;
     private const float cardBlank = 1.05f;      // 카드 간격
     Vector2 cardCenterValue = new Vector2(-1.58f, -2f); // 카드 센터 조정 값
+
+    public GameObject gameoverPanel;   // 게임 오버시 나올 판넬
     #endregion
 
     #region Unity Methods
     private void Awake()
-    {
+    { 
         // 리소스 매니저를 통해 스프라이트 불러올 예정
         //cardImages = Resources.Load<Sprite>("CardImage0")
-
     }
 
-    private void Start() { 
-    // Update is called once per frame
-    this.Initalized();
+    private void Start() {
+
+        Time.timeScale = 1f;    // 게임 시작
+
+        // Update is called once per frame
+        this.Initalized();
     }
     void Update()
     {
         time -= Time.deltaTime;
         timeTxt.text = time.ToString("N2");
+
+       GameOver();
     }
     #endregion
 
@@ -122,6 +129,7 @@ public class GameManager : SingletonMonoBase<GameManager>
             //카드 판별과 마찬가지로 나머지 값이 4일 때만 게임 종료
             if(int.Parse(secondCardImage.Substring(secondCardImage.Length -1))%5 == 4 && int.Parse(firstCardImage.Substring(firstCardImage.Length - 1))%5==4)
             {
+                gameoverPanel.SetActive(true);
                 Time.timeScale = 0.0f;
             }
         }
@@ -134,6 +142,18 @@ public class GameManager : SingletonMonoBase<GameManager>
         firstCard = null;
         secondCard = null;
     }
-    
+
+   
+    public void GameOver()
+    {
+        if (time <= 0)
+        {
+            gameoverPanel.SetActive(true);
+            Time.timeScale = 0f;
+        }
+
+    }
+   
+
     #endregion
 }
