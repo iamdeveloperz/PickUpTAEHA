@@ -5,22 +5,27 @@ using UnityEngine;
 public class Card : MonoBehaviour
 {
     public Animator anim;
-    // Start is called before the first frame update
+
+    private GameObject front;
+    private GameObject back;
+
+    private bool isFlip = false;
+
+    #region Unity Methods
     void Start()
     {
-        
+        front = transform.Find("Front").gameObject;
+        back = transform.Find("Back").gameObject;
     }
+    #endregion
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    #region Main Methods
     public void openCard()
     {
         anim.SetBool("isOpen", true);
-        transform.Find("Front").gameObject.SetActive(true);
-        transform.Find("Back").gameObject.SetActive(false);
+
+        front.SetActive(true);
+        back.SetActive(false);
 
         //조커 판별을 위한 이름 받아와 끝 수자리만 int 값으로 만들기
         string joker = gameObject.transform.Find("Front").GetComponent<SpriteRenderer>().sprite.name;
@@ -41,7 +46,23 @@ public class Card : MonoBehaviour
             GameManager.Instance.secondCard = gameObject;
             GameManager.Instance.cardMatched();
         }
+
+        /* 카드가 뒤집힌 적이 없었다면 */
+        if (!isFlip)
+            this.IsFlipCard();
     }
+
+    public void IsFlipCard()
+    {
+        isFlip = true;
+
+        SpriteRenderer backRenderer = back.transform.GetComponent<SpriteRenderer>();
+
+        backRenderer.sprite = Resources.Load<Sprite>("CardBackClicked");
+    }
+    #endregion
+
+    #region Sub Methods
     public void DestroyCard()
     {
         Invoke("DestroyCardInvoke", 1.0f);
@@ -62,6 +83,6 @@ public class Card : MonoBehaviour
         anim.SetBool("isOpen", false);
         transform.Find("Back").gameObject.SetActive(true);
         transform.Find("Front").gameObject.SetActive(false);
-
     }
+    #endregion
 }

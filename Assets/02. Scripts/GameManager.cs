@@ -35,10 +35,11 @@ public class GameManager : SingletonMonoBase<GameManager>
     private float cardScale = 1f;          // 카드 스케일
     private int widthNumber;        // 카드 가로 개수
     private int heightNumber;       // 카드 세로 개수
-    public GameObject firstCard;
-    public GameObject secondCard;
     private const float cardBlank = 1.05f;      // 카드 간격
     Vector2 cardCenterValue = new Vector2(-1.58f, -2f); // 카드 센터 조정 값
+
+    public GameObject firstCard;
+    public GameObject secondCard;
     #endregion
 
     #region Unity Methods
@@ -119,7 +120,8 @@ public class GameManager : SingletonMonoBase<GameManager>
             secondCard.GetComponent<Card>().DestroyCard();
 
             //카드 판별과 마찬가지로 나머지 값이 4일 때만 게임 종료
-            if(int.Parse(secondCardImage.Substring(secondCardImage.Length -1))%5 == 4 && int.Parse(firstCardImage.Substring(firstCardImage.Length - 1))%5==4)
+            if(int.Parse(secondCardImage.Substring(secondCardImage.Length -1))%5 == 4 && 
+                int.Parse(firstCardImage.Substring(firstCardImage.Length - 1))%5==4)
             {
                 Time.timeScale = 0.0f;
             }
