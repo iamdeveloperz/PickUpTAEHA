@@ -15,13 +15,17 @@ public class GameManager : SingletonMonoBase<GameManager>
         HARD
     }
     #endregion
-    public TMP_Text timeTxt;
-    public float time = 30.00f;
+
+    #region Properties
+    public float GameTime { get { return gameTime; } set { gameTime = value; } }
+    #endregion
 
     #region Member Variables
 
     [SerializeField] private GameObject cardPrefab;
-    private Sprite[] cardImages = null;
+
+    public TMP_Text timeTxt;
+    private float gameTime = 30.00f;
 
     private DIFFICULTY diff = DIFFICULTY.EASY;
 
@@ -35,21 +39,14 @@ public class GameManager : SingletonMonoBase<GameManager>
     #endregion
 
     #region Unity Methods
-    private void Awake()
-    {
-        // 리소스 매니저를 통해 스프라이트 불러올 예정
-        //cardImages = Resources.Load<Sprite>("CardImage0")
-
-    }
-
-    private void Start() { 
-    // Update is called once per frame
-    this.Initalized();
+    private void Start() 
+    { 
+        this.Initalized();
     }
     void Update()
     {
-        time -= Time.deltaTime;
-        timeTxt.text = time.ToString("N2");
+        gameTime -= Time.deltaTime;
+        timeTxt.text = gameTime.ToString("N2");
     }
     #endregion
 
@@ -85,9 +82,7 @@ public class GameManager : SingletonMonoBase<GameManager>
         int[] CardImages = new int[widthNumber * heightNumber];
 
         for(int i = 0; i < widthNumber * heightNumber; ++i)
-        {
             CardImages[i] = i / 2;
-        }
 
         CardImages = CardImages.OrderBy(item => Random.Range(-1.0f,1.0f)).ToArray();
 
@@ -108,6 +103,7 @@ public class GameManager : SingletonMonoBase<GameManager>
 
         parents.position = cardCenterValue;
     }
+
     public void cardMatched()
     {
         string firstCardImage = firstCard.transform.Find("Front").GetComponent<SpriteRenderer>().sprite.name;

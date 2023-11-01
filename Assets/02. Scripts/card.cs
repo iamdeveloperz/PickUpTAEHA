@@ -29,7 +29,7 @@ public class Card : MonoBehaviour
         //조커의 규칙인 5로 나누면 4가 나올 때 시간 줄이기
         if(jokerCheck%5== 4)
         {
-            GameManager.Instance.time -= 3.0f;
+            GameManager.Instance.GameTime -= 3.0f;
         }
 
         if (GameManager.Instance.firstCard == null)
