@@ -21,8 +21,9 @@ public class MemberCard : MonoBehaviour
     void Start()
     {
         //조커 판별을 위한 이름 받아와 끝 수자리만 int 값으로 만들기
+        Debug.Log(gameObject.transform.Find("Front").GetComponent<SpriteRenderer>().sprite.name);
         joker = gameObject.transform.Find("Front").GetComponent<SpriteRenderer>().sprite.name;
-        jokerCheck = int.Parse(joker.Substring(joker.Length - 1));
+        jokerCheck = int.Parse(joker.Substring(joker.Length - 2));
         cardName.text = imgName[jokerCheck % 5];
         front = transform.Find("Front").gameObject;
         back = transform.Find("Back").gameObject;
