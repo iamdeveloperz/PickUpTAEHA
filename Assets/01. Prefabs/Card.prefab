@@ -467,8 +467,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6943440671624518497}
   - component: {fileID: 5118707752393077311}
-  - component: {fileID: 6513500830349338377}
   - component: {fileID: -667786338141347352}
+  - component: {fileID: 6563501996475673563}
   m_Layer: 0
   m_Name: Card
   m_TagString: Untagged
@@ -511,20 +511,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &6513500830349338377
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6943440671624518502}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d2734ebc4aae6b4d8d284dc790c115d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  anim: {fileID: 5118707752393077311}
-  cardName: {fileID: 1447232808}
 --- !u!114 &-667786338141347352
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -569,7 +555,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6513500830349338377}
+      - m_Target: {fileID: 6563501996475673563}
         m_TargetAssemblyTypeName: Card, Assembly-CSharp
         m_MethodName: openCard
         m_Mode: 1
@@ -581,6 +567,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &6563501996475673563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6943440671624518502}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d2734ebc4aae6b4d8d284dc790c115d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  anim: {fileID: 5118707752393077311}
+  cardName: {fileID: 1447232808}
 --- !u!1 &6943440671985128330
 GameObject:
   m_ObjectHideFlags: 0

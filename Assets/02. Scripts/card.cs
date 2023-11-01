@@ -1,19 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Card : MonoBehaviour
 {
     public Animator anim;
-    string[] imgName = { "희성", "준호", "성준", "태용", "태하" };
+
+    string[] imgName = { "희성", "준호", "승준", "태용", "태하" };
     string joker;
     int jokerCheck;
     public Text cardName;
+
     private GameObject front;
     private GameObject back;
     // Start is called before the first frame update
-  
+
 
     private bool isFlip = false;
 
@@ -37,11 +37,8 @@ public class Card : MonoBehaviour
         front.SetActive(true);
         back.SetActive(false);
 
-        
-        
-        
         //조커의 규칙인 5로 나누면 4가 나올 때 시간 줄이기
-        if(jokerCheck%5== 4)
+        if (jokerCheck % 5 == 4)
         {
             GameManager.Instance.GameTime -= 3.0f;
         }
@@ -50,10 +47,10 @@ public class Card : MonoBehaviour
         {
             GameManager.Instance.firstCard = gameObject;
         }
-        else if(GameManager.Instance.firstCard != this.gameObject)
+        else if (GameManager.Instance.firstCard != this.gameObject)
         {
             GameManager.Instance.secondCard = gameObject;
-            GameManager.Instance.cardMatched();
+            GameManager.Instance.CardMatched();
         }
 
         /* 카드가 뒤집힌 적이 없었다면 */
@@ -75,7 +72,7 @@ public class Card : MonoBehaviour
     public void DestroyCard()
     {
         NameCheck();
-        Invoke("DestroyCardInvoke", 1.0f);
+        Invoke("DestroyCardInvoke", 0.5f);
     }
 
     void DestroyCardInvoke()
@@ -85,7 +82,7 @@ public class Card : MonoBehaviour
 
     public void CloseCard()
     {
-        Invoke("CloseCardInvoke", 1.0f);
+        Invoke("CloseCardInvoke", 0.5f);
     }
 
     void CloseCardInvoke()
@@ -97,7 +94,6 @@ public class Card : MonoBehaviour
     }
     void NameCheck()
     {
-        
         anim.SetBool("isFair", true);
     }
     #endregion
