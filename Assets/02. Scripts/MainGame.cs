@@ -1,6 +1,8 @@
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
+using UnityEngine.UI;
 using static GameManager;
 
 public class MainGame : MonoBehaviour
@@ -8,7 +10,8 @@ public class MainGame : MonoBehaviour
     #region Member Variables
 
     [SerializeField] private GameObject cardPrefab;
-
+    public TMP_Text currentScoreTxt;
+    public TMP_Text bestScoreTxt;
     private float cardScale = 1f;            // 카드 스케일
     private int widthNumber;                // 카드 가로 개수
     private int heightNumber;               // 카드 세로 개수
@@ -90,6 +93,8 @@ public class MainGame : MonoBehaviour
         GameManager.Instance.SettingCards(parents.gameObject);
         GameManager.Instance.SettingGameOverPanel(gameoverPanel);
         GameManager.Instance.SettingTryText(tryTxt);
+        GameManager.Instance.bestScoreTxt = bestScoreTxt;
+        GameManager.Instance.currentScoreTxt = currentScoreTxt;
 
         // 카드 생성
         this.CreateCard(parents);
