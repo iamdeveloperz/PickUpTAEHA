@@ -12,6 +12,7 @@ public class sceneManager : MonoBehaviour
         SoundManager.Instance.ButtonClick();
         SoundManager.Instance.GoMain();
         SoundManager.Instance.SoundCheck = true;
+        GameManager.Instance.startAnim = false;
     }
 
     public void GoTitle()
