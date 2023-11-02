@@ -64,6 +64,7 @@ public class MainGame : MonoBehaviour
                 widthNumber = heightNumber = 4;
                 GameManager.Instance.GameTime = 40f;
                 GameManager.Instance.difficultyBasicScore = 60;
+                GameManager.Instance.cardScore = 10;
                 break;
             case DIFFICULTY.NORMAL:
                 widthNumber = 4;
@@ -71,6 +72,7 @@ public class MainGame : MonoBehaviour
                 cardCenterValue = new Vector2(-1.58f, -3f);
                 GameManager.Instance.GameTime = 50f;
                 GameManager.Instance.difficultyBasicScore = 80;
+                GameManager.Instance.cardScore = 15;
                 break;
             case DIFFICULTY.HARD:
                 // cardScale 줄여야함
@@ -80,6 +82,7 @@ public class MainGame : MonoBehaviour
                 cardScale = 0.85f;
                 GameManager.Instance.GameTime = 90f;
                 GameManager.Instance.difficultyBasicScore = 120;
+                GameManager.Instance.cardScore = 18;
                 break;
         }
 

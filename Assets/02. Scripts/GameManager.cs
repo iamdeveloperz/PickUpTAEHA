@@ -40,13 +40,16 @@ public class GameManager : SingletonMonoBase<GameManager>
     private GameObject gameoverPanel;
     private TMP_Text tryTxt;
 
+    public TMP_Text currScroeText;
+    public TMP_Text bestScoreText;
+
     public const float lerpTimeValue = 0.7f;
     private bool isAlive = true;
     private int currentScore;   // 현재 점수
     private int maxScore;       // 최고 점수
 
     // 점수 세팅 변수
-    public const int cardScore = 5;     // 카드 매치 시 얻을 점수
+    public int cardScore;     // 카드 매치 시 얻을 점수
     public const int timeMultiple = 3;  // 남은 시간 점수 환산시 곱할 배수
     public int difficultyBasicScore;      // 난이도별 기본 점수
 
