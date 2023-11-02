@@ -39,7 +39,7 @@ public class MemberCard : MonoBehaviour
     #region Main Methods
     public void openCard()
     {
-        anim.SetBool("isOpen", true);
+        anim.SetBool("isNewOpen", true);
         SoundManager.Instance.OpenCard();   // 카드 오픈 사운드
         front.SetActive(true);
         back.SetActive(false);
