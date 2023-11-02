@@ -21,6 +21,8 @@ public class GameManager : SingletonMonoBase<GameManager>
     public GameObject GameoverPanel { get { return gameoverPanel; } }
     public bool IsVictory { get { return isVictory; } }
     public bool IsAlive { get { return isAlive; } set { isAlive = value; } }
+    public int CurrentScore { get { return currentScore; } set { currentScore = value; } }
+    public int MaxScore { get { return maxScore; } set { maxScore = value; } }
     #endregion
 
     #region Member Variables
@@ -40,6 +42,13 @@ public class GameManager : SingletonMonoBase<GameManager>
 
     public const float lerpTimeValue = 0.7f;
     private bool isAlive = true;
+    private int currentScore;   // 현재 점수
+    private int maxScore;       // 최고 점수
+
+    // 점수 세팅 변수
+    public const int cardScore = 5;     // 카드 매치 시 얻을 점수
+    public const int timeMultiple = 3;  // 남은 시간 점수 환산시 곱할 배수
+    public int difficultyBasicScore;      // 난이도별 기본 점수
 
     #endregion
 
@@ -51,15 +60,16 @@ public class GameManager : SingletonMonoBase<GameManager>
     {
         isAlive = false;
         StartCoroutine(OnGameOverPanel());
-        gameTryCount = 0;
-        //Time.timeScale = 0f;
+        // gameTryCount = 0;
+        // Time.timeScale = 0f;
     }
 
     public void GameVictory()
     {
         isAlive = false;
         isVictory = false;
-        this.GameOver();
+        this.VictoryScoreCalculate();
+        StartCoroutine(OnGameOverPanel());
     }
 
     public void CardMatched()
@@ -70,6 +80,7 @@ public class GameManager : SingletonMonoBase<GameManager>
         // 카드 매치 됐을시
         if (firstCardImage == secondCardImage)
         {
+
             firstCard.GetComponent<MemberCard>().DestroyCard();
             secondCard.GetComponent<MemberCard>().DestroyCard();
 
@@ -78,6 +89,10 @@ public class GameManager : SingletonMonoBase<GameManager>
                 int.Parse(firstCardImage.Substring(firstCardImage.Length - 1)) % 5 == 4)
             {
                 GameOver();
+            }
+            else // 아닐 경우 점수 추가
+            {
+                Instance.CurrentScore += cardScore;
             }
 
             StartCoroutine(IsVictoryGame());
@@ -120,6 +135,15 @@ public class GameManager : SingletonMonoBase<GameManager>
 
         if(isVictory)
             GameVictory();
+    }
+
+    // 승리 시 받는 점수 식
+    private void VictoryScoreCalculate()
+    {
+        int timeScore = (int)Instance.GameTime * timeMultiple;
+        int tryScore = difficultyBasicScore - gameTryCount;
+
+        currentScore += timeScore + tryScore;
     }
     #endregion
 
