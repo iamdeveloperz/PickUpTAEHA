@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 6408869608153603332}
   - component: {fileID: 8602531939398611457}
   m_Layer: 5
-  m_Name: bestText
+  m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -559,7 +559,7 @@ GameObject:
   - component: {fileID: 288764250471414112}
   - component: {fileID: 7246468571889012275}
   m_Layer: 5
-  m_Name: currText
+  m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
