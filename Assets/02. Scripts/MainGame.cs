@@ -14,6 +14,8 @@ public class MainGame : MonoBehaviour
     public TMP_Text bestScoreTxt;
     [SerializeField] private GameObject minusCountPrefab;
 
+    public float TimeLimit = 3f;
+
     private float cardScale = 1f;            // 카드 스케일
     private int widthNumber;                // 카드 가로 개수
     private int heightNumber;               // 카드 세로 개수
@@ -57,6 +59,23 @@ public class MainGame : MonoBehaviour
                 timeTxt.text = GameManager.Instance.GameTime.ToString("N2");
             }
         }
+
+        // 첫 카드 고르고 3초 지날 시 다시 덮기
+        if (GameManager.Instance.firstCard != null)
+        {
+            TimeLimit -= Time.deltaTime;
+        } else
+        {
+            TimeLimit = 3f;
+        }
+
+        if (GameManager.Instance.firstCard != null && TimeLimit <= 0 && GameManager.Instance.secondCard == null)
+        {
+            GameManager.Instance.firstCard.GetComponent<MemberCard>().CloseCard();
+            GameManager.Instance.firstCard = null;
+        }
+        
+
     }
     #endregion
 
