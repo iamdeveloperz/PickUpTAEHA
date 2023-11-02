@@ -1,6 +1,8 @@
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
+using UnityEngine.UI;
 using static GameManager;
 
 public class MainGame : MonoBehaviour
@@ -8,6 +10,8 @@ public class MainGame : MonoBehaviour
     #region Member Variables
 
     [SerializeField] private GameObject cardPrefab;
+    public TMP_Text currentScoreTxt;
+    public TMP_Text bestScoreTxt;
     [SerializeField] private GameObject minusCountPrefab;
 
     private float cardScale = 1f;            // 카드 스케일
@@ -27,6 +31,10 @@ public class MainGame : MonoBehaviour
     private void Start()
     {
         //Time.timeScale = 1f;    // 게임 시작
+
+        // 시작 전 점수 세팅
+        GameManager.Instance.CurrentScore = 0;
+
         if (!GameManager.Instance.IsAlive)
             GameManager.Instance.IsAlive = true;
 
@@ -62,12 +70,14 @@ public class MainGame : MonoBehaviour
             case DIFFICULTY.EASY:
                 widthNumber = heightNumber = 4;
                 GameManager.Instance.GameTime = 40f;
+                GameManager.Instance.difficultyBasicScore = 60;
                 break;
             case DIFFICULTY.NORMAL:
                 widthNumber = 4;
                 heightNumber = 5;
                 cardCenterValue = new Vector2(-1.58f, -3f);
                 GameManager.Instance.GameTime = 50f;
+                GameManager.Instance.difficultyBasicScore = 80;
                 break;
             case DIFFICULTY.HARD:
                 // cardScale 줄여야함
@@ -76,6 +86,7 @@ public class MainGame : MonoBehaviour
                 cardCenterValue = new Vector2(-1.78f, -3.2f);
                 cardScale = 0.85f;
                 GameManager.Instance.GameTime = 90f;
+                GameManager.Instance.difficultyBasicScore = 120;
                 break;
         }
 
@@ -83,6 +94,8 @@ public class MainGame : MonoBehaviour
         GameManager.Instance.SettingCards(parents.gameObject);
         GameManager.Instance.SettingGameOverPanel(gameoverPanel);
         GameManager.Instance.SettingTryText(tryTxt);
+        GameManager.Instance.bestScoreTxt = bestScoreTxt;
+        GameManager.Instance.currentScoreTxt = currentScoreTxt;
 
         // 카드 생성
         this.CreateCard(parents);
