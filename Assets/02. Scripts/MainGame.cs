@@ -104,17 +104,8 @@ public class MainGame : MonoBehaviour
 
             card.transform.position = new Vector3(x, y, 0);
 
-            string cardName = null;
-            if (i < 18)
-            {
-                //카드 숫자가 1자리일때
-                cardName = "CardImage0"+ CardImages[i].ToString();
-            }
-            else
-            {
-                //2자리 일때
-                cardName = "CardImage" + CardImages[i].ToString();
-            }
+            string cardName ="CardImage" + CardImages[i].ToString("D2");
+            
             card.transform.name = cardName;
             card.transform.Find("Front").GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(cardName);
         }
