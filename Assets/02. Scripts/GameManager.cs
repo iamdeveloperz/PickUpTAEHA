@@ -38,6 +38,8 @@ public class GameManager : SingletonMonoBase<GameManager>
     private GameObject gameoverPanel;
     private TMP_Text tryTxt;
 
+    private GameObject minusCount;
+
     public const float lerpTimeValue = 0.7f;
     private bool isAlive = true;
 
@@ -46,8 +48,8 @@ public class GameManager : SingletonMonoBase<GameManager>
     #region Unity Methods
     #endregion
 
-    #region Main Methods
-    public void GameOver()
+        #region Main Methods
+        public void GameOver()
     {
         isAlive = false;
         StartCoroutine(OnGameOverPanel());
@@ -121,6 +123,13 @@ public class GameManager : SingletonMonoBase<GameManager>
         if(isVictory)
             GameVictory();
     }
+
+    public void Minus()
+    {
+        Transform parents = GameObject.Find("TimerFrame").transform;
+        GameObject minusTxt = Instantiate(minusCount, parents);
+        Destroy(minusTxt, 1.0f);
+    }
     #endregion
 
     #region Sub Methods
@@ -157,6 +166,14 @@ public class GameManager : SingletonMonoBase<GameManager>
         yield return new WaitForSeconds(lerpTimeValue);
 
         gameoverPanel.SetActive(true);
+    }
+
+    public void MinusCount(GameObject minusCountPrefab)
+    {
+        if(minusCount == null)
+        {
+            minusCount = minusCountPrefab;
+        }
     }
     #endregion
 }
