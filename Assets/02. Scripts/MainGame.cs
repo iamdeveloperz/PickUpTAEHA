@@ -10,9 +10,6 @@ public class MainGame : MonoBehaviour
     #region Member Variables
 
     [SerializeField] private GameObject cardPrefab;
-
-    public TMP_Text currentScoreTxt;
-    public TMP_Text bestScoreTxt;
     [SerializeField] private GameObject minusCountPrefab;
 
     private float cardScale = 1f;            // 카드 스케일

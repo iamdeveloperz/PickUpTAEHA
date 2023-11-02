@@ -1381,6 +1381,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardPrefab: {fileID: 6943440671624518502, guid: 71bfd5af1ddf3dd4ca4fb2250ac9cdc2, type: 3}
+  minusCountPrefab: {fileID: 5764650670153314766, guid: eab87595edcd96945a9dc0db28b86362, type: 3}
   gameoverPanel: {fileID: 1016463049}
   gamevictoryPanel: {fileID: 1706318537}
   gameEndBG: {fileID: 1909007571}
