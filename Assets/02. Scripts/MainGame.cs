@@ -42,6 +42,7 @@ public class MainGame : MonoBehaviour
     private void Start()
     {
         //Time.timeScale = 1f;    // 게임 시작
+        GameManager.Instance.startAnim = false;
 
         if (!GameManager.Instance.IsAlive)
             GameManager.Instance.IsAlive = true;
@@ -131,6 +132,7 @@ public class MainGame : MonoBehaviour
 
     private void UITextSetting()
     {
+        GameManager.Instance.loadScore();
         GameObject scoreStandard = GameObject.Find("ScoreStandard");
         Transform currScoreUI = scoreStandard.transform.Find("CurrScore").Find("Standard");
         Transform bestScoreUI = scoreStandard.transform.Find("BestScore").Find("Standard");
@@ -145,7 +147,6 @@ public class MainGame : MonoBehaviour
     {
         // 시작 전 점수 세팅
         GameManager.Instance.CurrentScore = 0;
-        GameManager.Instance.loadScore();
 
         GameManager.Instance.gameEndBG = gameEndBG;
 
