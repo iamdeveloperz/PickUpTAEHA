@@ -8,5 +8,7 @@ public class MainButtonFunc : MonoBehaviour
     public void GoToTitleButton()
     {
         SceneManager.LoadScene(0);
+        SoundManager.Instance.ButtonClick();
+        SoundManager.Instance.GoTitle();
     }
 }

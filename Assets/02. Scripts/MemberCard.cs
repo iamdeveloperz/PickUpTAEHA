@@ -39,10 +39,10 @@ public class MemberCard : MonoBehaviour
     #region Main Methods
     public void openCard()
     {
-        //anim.SetBool("isOpen", true);
-
-        //front.SetActive(true);
-        //back.SetActive(false);
+        anim.SetBool("isOpen", true);
+        SoundManager.Instance.OpenCard();   // 카드 오픈 사운드
+        front.SetActive(true);
+        back.SetActive(false);
 
         //조커의 규칙인 5로 나누면 4가 나올 때 시간 줄이기
         if (jokerCheck % 5 == 4)
