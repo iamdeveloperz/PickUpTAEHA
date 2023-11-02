@@ -3,6 +3,8 @@ using System.Collections;
 using TMPro;
 using UnityEditor.Rendering;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class GameManager : SingletonMonoBase<GameManager>
 {
@@ -18,9 +20,10 @@ public class GameManager : SingletonMonoBase<GameManager>
     #region Properties
     public float GameTime { get { return gameTime; } set { gameTime = value; } }
     public DIFFICULTY Difficulty { get { return diff; } set { diff = value; } }
-    public GameObject GameoverPanel { get { return gameoverPanel; } }
     public bool IsVictory { get { return isVictory; } }
     public bool IsAlive { get { return isAlive; } set { isAlive = value; } }
+    public int CurrentScore { get { return currentScore; } set { currentScore = value; } }
+    public int BestScore { get { return bestScore; } set { bestScore = value; } }
     #endregion
 
     #region Member Variables
@@ -36,33 +39,49 @@ public class GameManager : SingletonMonoBase<GameManager>
     public GameObject secondCard;
 
     private GameObject gameoverPanel;
+    private GameObject gamevictoryPanel;
+    public GameObject gameEndBG;
     private TMP_Text tryTxt;
+
+    private GameObject minusCount;
 
     public const float lerpTimeValue = 0.7f;
     private bool isAlive = true;
+    private int currentScore;   // 현재 점수
+    private int bestScore;       // 최고 점수
+
+
+    // 점수 세팅 변수
+    public int cardScore;     // 카드 매치 시 얻을 점수
+    public const int timeMultiple = 3;  // 남은 시간 점수 환산시 곱할 배수
+    public int difficultyBasicScore;      // 난이도별 기본 점수
 
     #endregion
 
     #region Unity Methods
     #endregion
 
-    #region Main Methods
-    public void GameOver()
+        #region Main Methods
+        public void GameOver()
     {
         isAlive = false;
+        savedScore();
+        gameEndBG.SetActive(true);
         StartCoroutine(OnGameOverPanel());
-        if (SoundManager.Instance.SoundCheck == true) SoundManager.Instance.GameLose();
-        else if (SoundManager.Instance.SoundCheck == false) SoundManager.Instance.GameWin();
+        SoundManager.Instance.GameLose();
         gameTryCount = 0;
         //Time.timeScale = 0f;
     }
 
     public void GameVictory()
     {
-        SoundManager.Instance.SoundCheck = false;
         isAlive = false;
         isVictory = false;
-        this.GameOver();
+        this.VictoryScoreCalculate();
+        savedScore();
+        gameEndBG.SetActive(true);
+        SoundManager.Instance.GameWin();
+        StartCoroutine(OnGameVictoryPanel());
     }
 
     public void CardMatched()
@@ -73,6 +92,7 @@ public class GameManager : SingletonMonoBase<GameManager>
         // 카드 매치 됐을시
         if (firstCardImage == secondCardImage)
         {
+
             firstCard.GetComponent<MemberCard>().DestroyCard();
             secondCard.GetComponent<MemberCard>().DestroyCard();
             SoundManager.Instance.MatchSuccess();   // 매칭 성공 사운드
@@ -82,6 +102,10 @@ public class GameManager : SingletonMonoBase<GameManager>
                 int.Parse(firstCardImage.Substring(firstCardImage.Length - 1)) % 5 == 4)
             {
                 GameOver();
+            }
+            else // 아닐 경우 점수 추가
+            {
+                Instance.CurrentScore += cardScore;
             }
 
             StartCoroutine(IsVictoryGame());
@@ -125,6 +149,42 @@ public class GameManager : SingletonMonoBase<GameManager>
         if(isVictory)
             GameVictory();
     }
+
+    // 승리 시 받는 점수 식
+    private void VictoryScoreCalculate()
+    {
+        int timeScore = (int)Instance.GameTime * timeMultiple;
+        int tryScore = difficultyBasicScore - gameTryCount;
+
+        currentScore += timeScore + tryScore;
+    }
+    public void savedScore()
+    {
+        if (PlayerPrefs.HasKey("bestScore") == false)
+            PlayerPrefs.SetInt("bestScore", currentScore);
+        else
+        {
+            if (PlayerPrefs.GetInt("bestScore") < currentScore)
+            {
+                PlayerPrefs.SetInt("bestScore", currentScore);
+            }
+        }
+    }
+
+    public void loadScore()
+    {
+        if (PlayerPrefs.HasKey("bestScore") == false)
+            PlayerPrefs.SetInt("bestScore", 0);
+        else
+            bestScore = PlayerPrefs.GetInt("bestScore");
+    }
+
+    public void Minus()
+    {
+        Transform parents = GameObject.Find("TimerFrame").transform;
+        GameObject minusTxt = Instantiate(minusCount, parents);
+        Destroy(minusTxt, 1.0f);
+    }
     #endregion
 
     #region Sub Methods
@@ -145,6 +205,12 @@ public class GameManager : SingletonMonoBase<GameManager>
             gameoverPanel = overPanel;
     }
 
+    public void SettingGameVictoryPanel(GameObject victoryPanel)
+    {
+        if (gamevictoryPanel == null)
+            gamevictoryPanel = victoryPanel;
+    }
+
     public void SettingTryText(TMP_Text tryText)
     {
         if (tryTxt == null)
@@ -158,9 +224,55 @@ public class GameManager : SingletonMonoBase<GameManager>
 
     private IEnumerator OnGameOverPanel()
     {
+        TMP_Text curScore = gameoverPanel.transform.GetChild(0).GetChild(0).GetComponent<TMP_Text>();
+        TMP_Text bstScore = gameoverPanel.transform.GetChild(1).GetChild(0).GetComponent<TMP_Text>();
+
+        loadScore();
+
+        curScore.text = currentScore.ToString();
+        bstScore.text = bestScore.ToString();
+
         yield return new WaitForSeconds(lerpTimeValue);
 
         gameoverPanel.SetActive(true);
+    }
+
+    private IEnumerator OnGameVictoryPanel()
+    {
+        TMP_Text curScore = gamevictoryPanel.transform.GetChild(0).GetChild(0).GetComponent<TMP_Text>();
+        TMP_Text bstScore = gamevictoryPanel.transform.GetChild(1).GetChild(0).GetComponent<TMP_Text>();
+
+        loadScore();
+
+        curScore.text = currentScore.ToString();
+        bstScore.text = bestScore.ToString();
+        Debug.Log(curScore.text);
+
+        yield return new WaitForSeconds(lerpTimeValue);
+
+        gamevictoryPanel.SetActive(true);
+    }
+
+    public void MainStageScoreTextUpdate(TMP_Text curSText, TMP_Text bestSText)
+    {
+        if (this.bestScore < currentScore)
+        {
+            bestSText.text = currentScore.ToString();
+            curSText.text = currentScore.ToString();
+        }
+        else
+        {
+            bestSText.text = bestScore.ToString();
+            curSText.text = currentScore.ToString();
+        }
+    }
+
+    public void MinusCount(GameObject minusCountPrefab)
+    {
+        if(minusCount == null)
+        {
+            minusCount = minusCountPrefab;
+        }
     }
     #endregion
 }
