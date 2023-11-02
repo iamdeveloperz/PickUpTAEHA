@@ -567,6 +567,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 5798684412584644664}
+        m_TargetAssemblyTypeName: MemberCard, Assembly-CSharp
+        m_MethodName: StartAnimEnd
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &5798684412584644664
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -581,7 +593,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anim: {fileID: 5118707752393077311}
   cardName: {fileID: 1447232808}
-  minusCount: {fileID: 1524014022362282218, guid: eab87595edcd96945a9dc0db28b86362, type: 3}
 --- !u!1 &6943440671985128330
 GameObject:
   m_ObjectHideFlags: 0

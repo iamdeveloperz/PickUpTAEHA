@@ -21,6 +21,13 @@ public class MemberCard : MonoBehaviour
     #region Unity Methods
     void Start()
     {
+        //게임 시작할 때 카드 준비 애니메이션 시작
+        anim.SetBool("isStart", true);
+        //애니메이션 끝나면 종료하는 함수
+        Invoke("StartAnimEnd", 3.0f);
+
+        //조커 판별을 위한 이름 받아와 끝 수자리만 int 값으로 만들기
+        
         joker = gameObject.transform.Find("Front").GetComponent<SpriteRenderer>().sprite.name;
         jokerCheck = int.Parse(joker.Substring(joker.Length - 2));
         cardName.text = imgName[jokerCheck % 5];
@@ -32,7 +39,7 @@ public class MemberCard : MonoBehaviour
     #region Main Methods
     public void openCard()
     {
-        anim.SetBool("isOpen", true);
+        anim.SetBool("isNewOpen", true);
         SoundManager.Instance.OpenCard();   // 카드 오픈 사운드
         front.SetActive(true);
         back.SetActive(false);
@@ -40,13 +47,22 @@ public class MemberCard : MonoBehaviour
         //조커의 규칙인 5로 나누면 4가 나올 때 시간 줄이기
         if (jokerCheck % 5 == 4)
         {
+            //이미 뒤집힌 조커 연속 클릭 제한
+            if (!anim.GetBool("isJoker"))
+            {
             GameManager.Instance.GameTime -= 3.0f;
             GameManager.Instance.Minus();
+            }
+            anim.SetBool("isJoker", true);
+        }
+        else
+        {
+            anim.SetBool("isNewOpen", true);
         }
 
         if (GameManager.Instance.firstCard == null)
         {
-            GameManager.Instance.firstCard = gameObject;
+            GameManager.Instance.firstCard = gameObject;            
         }
         else if (GameManager.Instance.firstCard != this.gameObject)
         {
@@ -88,14 +104,20 @@ public class MemberCard : MonoBehaviour
 
     void CloseCardInvoke()
     {
-        anim.SetBool("isOpen", false);
-        transform.Find("Back").gameObject.SetActive(true);
-        transform.Find("Front").gameObject.SetActive(false);
+        anim.SetBool("isNewOpen", false);
+        anim.SetBool("isJoker", false);
+        //transform.Find("Back").gameObject.SetActive(true);
+        //transform.Find("Front").gameObject.SetActive(false);
 
     }
     void NameCheck()
     {
         anim.SetBool("isFair", true);
+    }
+    public void StartAnimEnd()
+    {
+        GameManager.Instance.startAnim = true;
+        anim.SetBool("isStart", false);
     }
     #endregion
 }
