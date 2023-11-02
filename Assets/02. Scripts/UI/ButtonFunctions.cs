@@ -8,11 +8,11 @@ using UnityEngine.UI;
 public class ButtonFunctions : MonoBehaviour
 {
     public GameObject popupUI;
-
     private void Start()
     {
         GameManager.Instance.SettingTimeScale(true);
         this.SettingDifficultyButtons();
+
     }
 
     #region Title Buttons

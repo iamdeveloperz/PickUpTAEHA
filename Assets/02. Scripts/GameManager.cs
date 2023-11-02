@@ -3,6 +3,8 @@ using System.Collections;
 using TMPro;
 using UnityEditor.Rendering;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class GameManager : SingletonMonoBase<GameManager>
 {
@@ -22,7 +24,7 @@ public class GameManager : SingletonMonoBase<GameManager>
     public bool IsVictory { get { return isVictory; } }
     public bool IsAlive { get { return isAlive; } set { isAlive = value; } }
     public int CurrentScore { get { return currentScore; } set { currentScore = value; } }
-    public int MaxScore { get { return maxScore; } set { maxScore = value; } }
+    public int BestScore { get { return bestScore; } set { bestScore = value; } }
     #endregion
 
     #region Member Variables
@@ -43,7 +45,10 @@ public class GameManager : SingletonMonoBase<GameManager>
     public const float lerpTimeValue = 0.7f;
     private bool isAlive = true;
     private int currentScore;   // 현재 점수
-    private int maxScore;       // 최고 점수
+    private int bestScore;       // 최고 점수
+    public TMP_Text currentScoreTxt;
+    public TMP_Text bestScoreTxt;
+
 
     // 점수 세팅 변수
     public const int cardScore = 5;     // 카드 매치 시 얻을 점수
@@ -59,6 +64,8 @@ public class GameManager : SingletonMonoBase<GameManager>
     public void GameOver()
     {
         isAlive = false;
+        Debug.Log(currentScore);
+        savedScore();
         StartCoroutine(OnGameOverPanel());
         // gameTryCount = 0;
         // Time.timeScale = 0f;
@@ -69,6 +76,7 @@ public class GameManager : SingletonMonoBase<GameManager>
         isAlive = false;
         isVictory = false;
         this.VictoryScoreCalculate();
+        savedScore();
         StartCoroutine(OnGameOverPanel());
     }
 
@@ -145,8 +153,22 @@ public class GameManager : SingletonMonoBase<GameManager>
 
         currentScore += timeScore + tryScore;
     }
+    public void savedScore()
+    {
+        if (PlayerPrefs.HasKey("bestScore") == false)
+        {
+            PlayerPrefs.SetInt("bestScore", currentScore);
+        }
+        else
+        {
+            if (PlayerPrefs.GetInt("bestScore") < currentScore)
+            {
+                PlayerPrefs.SetInt("bestScore", currentScore);
+            }
+        }
+        bestScoreTxt.text = PlayerPrefs.GetInt("bestScore").ToString();
+    }
     #endregion
-
     #region Sub Methods
     public void SettingCards(GameObject cards)
     {
