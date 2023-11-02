@@ -1174,6 +1174,7 @@ MonoBehaviour:
   cardPrefab: {fileID: 6943440671624518502, guid: 71bfd5af1ddf3dd4ca4fb2250ac9cdc2, type: 3}
   currentScoreTxt: {fileID: 2007229885}
   bestScoreTxt: {fileID: 311676117}
+  minusCountPrefab: {fileID: 5764650670153314766, guid: eab87595edcd96945a9dc0db28b86362, type: 3}
   gameoverPanel: {fileID: 3436220862944828604}
   timeTxt: {fileID: 1329589782}
   tryTxt: {fileID: 183670429}

@@ -34,21 +34,30 @@ public class MemberCard : MonoBehaviour
     #region Main Methods
     public void openCard()
     {
-        anim.SetBool("isOpen", true);
+        //anim.SetBool("isOpen", true);
 
-        front.SetActive(true);
-        back.SetActive(false);
+        //front.SetActive(true);
+        //back.SetActive(false);
 
         //조커의 규칙인 5로 나누면 4가 나올 때 시간 줄이기
         if (jokerCheck % 5 == 4)
         {
+            //이미 뒤집힌 조커 연속 클릭 제한
+            if (!anim.GetBool("isJoker"))
+            {
             GameManager.Instance.GameTime -= 3.0f;
             GameManager.Instance.Minus();
+            }
+            anim.SetBool("isJoker", true);
+        }
+        else
+        {
+            anim.SetBool("isNewOpen", true);
         }
 
         if (GameManager.Instance.firstCard == null)
         {
-            GameManager.Instance.firstCard = gameObject;
+            GameManager.Instance.firstCard = gameObject;            
         }
         else if (GameManager.Instance.firstCard != this.gameObject)
         {
@@ -90,9 +99,10 @@ public class MemberCard : MonoBehaviour
 
     void CloseCardInvoke()
     {
-        anim.SetBool("isOpen", false);
-        transform.Find("Back").gameObject.SetActive(true);
-        transform.Find("Front").gameObject.SetActive(false);
+        anim.SetBool("isNewOpen", false);
+        anim.SetBool("isJoker", false);
+        //transform.Find("Back").gameObject.SetActive(true);
+        //transform.Find("Front").gameObject.SetActive(false);
 
     }
     void NameCheck()

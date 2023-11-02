@@ -581,7 +581,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anim: {fileID: 5118707752393077311}
   cardName: {fileID: 1447232808}
-  minusCount: {fileID: 1524014022362282218, guid: eab87595edcd96945a9dc0db28b86362, type: 3}
 --- !u!1 &6943440671985128330
 GameObject:
   m_ObjectHideFlags: 0
