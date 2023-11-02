@@ -24,6 +24,7 @@ public class GameManager : SingletonMonoBase<GameManager>
     public bool IsAlive { get { return isAlive; } set { isAlive = value; } }
     public int CurrentScore { get { return currentScore; } set { currentScore = value; } }
     public int BestScore { get { return bestScore; } set { bestScore = value; } }
+    public GameObject Cards { get { return cards; } }
     #endregion
 
     #region Member Variables
@@ -61,7 +62,7 @@ public class GameManager : SingletonMonoBase<GameManager>
     #region Unity Methods
     #endregion
 
-        #region Main Methods
+    #region Main Methods
         public void GameOver()
     {
         isAlive = false;
@@ -157,6 +158,7 @@ public class GameManager : SingletonMonoBase<GameManager>
         int tryScore = difficultyBasicScore - gameTryCount;
 
         currentScore += timeScore + tryScore;
+        gameTryCount = 0;
     }
     public void savedScore()
     {
@@ -246,7 +248,6 @@ public class GameManager : SingletonMonoBase<GameManager>
 
         curScore.text = currentScore.ToString();
         bstScore.text = bestScore.ToString();
-        Debug.Log(curScore.text);
 
         yield return new WaitForSeconds(lerpTimeValue);
 

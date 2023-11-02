@@ -33,9 +33,16 @@ public class MainGame : MonoBehaviour
     #endregion
 
     #region Unity Methods
+    private void Awake()
+    {
+        // 팝업 확인을 누르기 전까지 TimeScale 조절
+        Time.timeScale = 0f;
+    }
+
     private void Start()
     {
         //Time.timeScale = 1f;    // 게임 시작
+
         if (!GameManager.Instance.IsAlive)
             GameManager.Instance.IsAlive = true;
 
