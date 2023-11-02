@@ -43,6 +43,8 @@ public class GameManager : SingletonMonoBase<GameManager>
     public GameObject gameEndBG;
     private TMP_Text tryTxt;
 
+    private GameObject minusCount;
+
     public const float lerpTimeValue = 0.7f;
     private bool isAlive = true;
     private int currentScore;   // 현재 점수
@@ -59,8 +61,8 @@ public class GameManager : SingletonMonoBase<GameManager>
     #region Unity Methods
     #endregion
 
-    #region Main Methods
-    public void GameOver()
+        #region Main Methods
+        public void GameOver()
     {
         isAlive = false;
         savedScore();
@@ -172,7 +174,14 @@ public class GameManager : SingletonMonoBase<GameManager>
             bestScore = PlayerPrefs.GetInt("bestScore");
     }
 
+    public void Minus()
+    {
+        Transform parents = GameObject.Find("TimerFrame").transform;
+        GameObject minusTxt = Instantiate(minusCount, parents);
+        Destroy(minusTxt, 1.0f);
+    }
     #endregion
+
     #region Sub Methods
     public void SettingCards(GameObject cards)
     {
@@ -250,6 +259,14 @@ public class GameManager : SingletonMonoBase<GameManager>
         {
             bestSText.text = bestScore.ToString();
             curSText.text = currentScore.ToString();
+        }
+    }
+
+    public void MinusCount(GameObject minusCountPrefab)
+    {
+        if(minusCount == null)
+        {
+            minusCount = minusCountPrefab;
         }
     }
     #endregion

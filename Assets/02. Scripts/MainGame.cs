@@ -11,6 +11,10 @@ public class MainGame : MonoBehaviour
 
     [SerializeField] private GameObject cardPrefab;
 
+    public TMP_Text currentScoreTxt;
+    public TMP_Text bestScoreTxt;
+    [SerializeField] private GameObject minusCountPrefab;
+
     private float cardScale = 1f;            // 카드 스케일
     private int widthNumber;                // 카드 가로 개수
     private int heightNumber;               // 카드 세로 개수
@@ -35,6 +39,8 @@ public class MainGame : MonoBehaviour
         //Time.timeScale = 1f;    // 게임 시작
         if (!GameManager.Instance.IsAlive)
             GameManager.Instance.IsAlive = true;
+
+        GameManager.Instance.MinusCount(minusCountPrefab);
 
         this.Initalized();
     }
@@ -153,7 +159,7 @@ public class MainGame : MonoBehaviour
 
         parents.position = cardCenterValue;
         parents.localScale = new Vector3(cardScale, cardScale, 0);
-    }
+    } 
     #endregion
 
     #region Sub Methods
