@@ -51,6 +51,8 @@ public class GameManager : SingletonMonoBase<GameManager>
     public TMP_Text currentScoreTxt;
     public TMP_Text bestScoreTxt;
 
+    // 게임 시작시 카드 배치 애니메이션이 끝났는지 판단하는 값
+    public bool startAnim = false;
 
     // 점수 세팅 변수
     public const int cardScore = 5;     // 카드 매치 시 얻을 점수
@@ -171,6 +173,7 @@ public class GameManager : SingletonMonoBase<GameManager>
         bestScoreTxt.text = PlayerPrefs.GetInt("bestScore").ToString();
     }
 
+    //시간 단축 애니매니션 작동로직
     public void Minus()
     {
         Transform parents = GameObject.Find("TimerFrame").transform;

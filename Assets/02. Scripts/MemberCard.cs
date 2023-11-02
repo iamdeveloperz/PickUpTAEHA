@@ -21,6 +21,11 @@ public class MemberCard : MonoBehaviour
     #region Unity Methods
     void Start()
     {
+        //게임 시작할 때 카드 준비 애니메이션 시작
+        anim.SetBool("isStart", true);
+        //애니메이션 끝나면 종료하는 함수
+        Invoke("StartAnimEnd", 3.0f);
+
         //조커 판별을 위한 이름 받아와 끝 수자리만 int 값으로 만들기
         
         joker = gameObject.transform.Find("Front").GetComponent<SpriteRenderer>().sprite.name;
@@ -108,6 +113,11 @@ public class MemberCard : MonoBehaviour
     void NameCheck()
     {
         anim.SetBool("isFair", true);
+    }
+    public void StartAnimEnd()
+    {
+        GameManager.Instance.startAnim = true;
+        anim.SetBool("isStart", false);
     }
     #endregion
 }

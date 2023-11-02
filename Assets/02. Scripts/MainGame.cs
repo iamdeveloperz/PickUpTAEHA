@@ -45,16 +45,20 @@ public class MainGame : MonoBehaviour
 
     private void Update()
     {
-        if (GameManager.Instance.IsAlive)
+        //시작 애니메니션 로딩이 끝났으면 타이머 시작
+        if (GameManager.Instance.startAnim)
         {
-            GameManager.Instance.GameTime -= Time.deltaTime;
-            timeTxt.text = GameManager.Instance.GameTime.ToString("N2");
-
-            if (GameManager.Instance.GameTime <= 0)
+            if (GameManager.Instance.IsAlive)
             {
-                GameManager.Instance.GameTime = 0f;
-                GameManager.Instance.GameOver();
+                GameManager.Instance.GameTime -= Time.deltaTime;
                 timeTxt.text = GameManager.Instance.GameTime.ToString("N2");
+
+                if (GameManager.Instance.GameTime <= 0)
+                {
+                    GameManager.Instance.GameTime = 0f;
+                    GameManager.Instance.GameOver();
+                    timeTxt.text = GameManager.Instance.GameTime.ToString("N2");
+                }
             }
         }
     }
