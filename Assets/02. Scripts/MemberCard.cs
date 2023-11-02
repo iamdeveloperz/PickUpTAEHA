@@ -34,7 +34,7 @@ public class MemberCard : MonoBehaviour
     public void openCard()
     {
         anim.SetBool("isOpen", true);
-
+        SoundManager.Instance.OpenCard();   // 카드 오픈 사운드
         front.SetActive(true);
         back.SetActive(false);
 

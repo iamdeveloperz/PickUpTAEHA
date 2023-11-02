@@ -51,12 +51,15 @@ public class GameManager : SingletonMonoBase<GameManager>
     {
         isAlive = false;
         StartCoroutine(OnGameOverPanel());
+        if (SoundManager.Instance.SoundCheck == true) SoundManager.Instance.GameLose();
+        else if (SoundManager.Instance.SoundCheck == false) SoundManager.Instance.GameWin();
         gameTryCount = 0;
         //Time.timeScale = 0f;
     }
 
     public void GameVictory()
     {
+        SoundManager.Instance.SoundCheck = false;
         isAlive = false;
         isVictory = false;
         this.GameOver();
@@ -72,6 +75,7 @@ public class GameManager : SingletonMonoBase<GameManager>
         {
             firstCard.GetComponent<MemberCard>().DestroyCard();
             secondCard.GetComponent<MemberCard>().DestroyCard();
+            SoundManager.Instance.MatchSuccess();   // 매칭 성공 사운드
 
             // 카드 판별과 마찬가지로 나머지 값이 4일 때만 게임 종료
             if (int.Parse(secondCardImage.Substring(secondCardImage.Length - 1)) % 5 == 4 &&

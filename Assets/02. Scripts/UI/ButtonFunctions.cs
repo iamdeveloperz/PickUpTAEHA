@@ -19,11 +19,13 @@ public class ButtonFunctions : MonoBehaviour
     public void ExitButton()
     {
         Application.Quit();
+        SoundManager.Instance.ButtonClick();
     }
 
     public void PopupOnButton()
     {
         popupUI.SetActive(true);
+        SoundManager.Instance.ButtonClick();
     }
     #endregion
 
@@ -31,6 +33,7 @@ public class ButtonFunctions : MonoBehaviour
     public void PopupExitButton()
     {
         popupUI.SetActive(false);
+        SoundManager.Instance.ButtonClick();
     }
     #endregion
 
@@ -65,6 +68,8 @@ public class ButtonFunctions : MonoBehaviour
                 break;
         }
 
+        SoundManager.Instance.ButtonClick();
+        SoundManager.Instance.GoMain();
         SceneManager.LoadScene(1);
     }
 }
