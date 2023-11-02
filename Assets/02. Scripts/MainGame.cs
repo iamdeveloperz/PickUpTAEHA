@@ -10,8 +10,6 @@ public class MainGame : MonoBehaviour
     #region Member Variables
 
     [SerializeField] private GameObject cardPrefab;
-    public TMP_Text currentScoreTxt;
-    public TMP_Text bestScoreTxt;
     [SerializeField] private GameObject minusCountPrefab;
 
     public float TimeLimit = 3f;
@@ -23,9 +21,14 @@ public class MainGame : MonoBehaviour
     Vector2 cardCenterValue = new Vector2(-1.58f, -2f);     // 카드 센터 조정 값
 
     public GameObject gameoverPanel;   // 게임 오버시 나올 판넬
+    public GameObject gamevictoryPanel;
+    public GameObject gameEndBG;
 
     [SerializeField] private TMP_Text timeTxt;
     [SerializeField] private TMP_Text tryTxt;
+
+    [SerializeField] private TMP_Text currentScoreTxt;
+    [SerializeField] private TMP_Text bestScoreTxt;
 
     #endregion
 
@@ -33,10 +36,6 @@ public class MainGame : MonoBehaviour
     private void Start()
     {
         //Time.timeScale = 1f;    // 게임 시작
-
-        // 시작 전 점수 세팅
-        GameManager.Instance.CurrentScore = 0;
-
         if (!GameManager.Instance.IsAlive)
             GameManager.Instance.IsAlive = true;
 
@@ -51,6 +50,7 @@ public class MainGame : MonoBehaviour
         {
             GameManager.Instance.GameTime -= Time.deltaTime;
             timeTxt.text = GameManager.Instance.GameTime.ToString("N2");
+            this.ScoreTextUpdate();
 
             if (GameManager.Instance.GameTime <= 0)
             {
@@ -90,6 +90,7 @@ public class MainGame : MonoBehaviour
                 widthNumber = heightNumber = 4;
                 GameManager.Instance.GameTime = 40f;
                 GameManager.Instance.difficultyBasicScore = 60;
+                GameManager.Instance.cardScore = 10;
                 break;
             case DIFFICULTY.NORMAL:
                 widthNumber = 4;
@@ -97,6 +98,7 @@ public class MainGame : MonoBehaviour
                 cardCenterValue = new Vector2(-1.58f, -3f);
                 GameManager.Instance.GameTime = 50f;
                 GameManager.Instance.difficultyBasicScore = 80;
+                GameManager.Instance.cardScore = 15;
                 break;
             case DIFFICULTY.HARD:
                 // cardScale 줄여야함
@@ -106,18 +108,44 @@ public class MainGame : MonoBehaviour
                 cardScale = 0.85f;
                 GameManager.Instance.GameTime = 90f;
                 GameManager.Instance.difficultyBasicScore = 120;
+                GameManager.Instance.cardScore = 18;
                 break;
         }
 
+        // 스테이지에 존재하는 스코어 텍스트
+        this.UITextSetting();
+
         // 게임매니저가 알아야 될 정보 세팅
-        GameManager.Instance.SettingCards(parents.gameObject);
-        GameManager.Instance.SettingGameOverPanel(gameoverPanel);
-        GameManager.Instance.SettingTryText(tryTxt);
-        GameManager.Instance.bestScoreTxt = bestScoreTxt;
-        GameManager.Instance.currentScoreTxt = currentScoreTxt;
+        this.InitGameManagerSetting(parents);
 
         // 카드 생성
         this.CreateCard(parents);
+    }
+
+    private void UITextSetting()
+    {
+        GameObject scoreStandard = GameObject.Find("ScoreStandard");
+        Transform currScoreUI = scoreStandard.transform.Find("CurrScore").Find("Standard");
+        Transform bestScoreUI = scoreStandard.transform.Find("BestScore").Find("Standard");
+
+        currentScoreTxt = currScoreUI.GetChild(0).GetComponent<TMP_Text>();
+        bestScoreTxt = bestScoreUI.GetChild(0).GetComponent<TMP_Text>();
+
+        bestScoreTxt.text = GameManager.Instance.BestScore.ToString();
+    }
+
+    private void InitGameManagerSetting(Transform parents)
+    {
+        // 시작 전 점수 세팅
+        GameManager.Instance.CurrentScore = 0;
+        GameManager.Instance.loadScore();
+
+        GameManager.Instance.gameEndBG = gameEndBG;
+
+        GameManager.Instance.SettingCards(parents.gameObject);
+        GameManager.Instance.SettingGameOverPanel(gameoverPanel);
+        GameManager.Instance.SettingGameVictoryPanel(gamevictoryPanel);
+        GameManager.Instance.SettingTryText(tryTxt);
     }
 
     private void CreateCard(Transform parents)
@@ -148,5 +176,12 @@ public class MainGame : MonoBehaviour
         parents.position = cardCenterValue;
         parents.localScale = new Vector3(cardScale, cardScale, 0);
     } 
+    #endregion
+
+    #region Sub Methods
+    public void ScoreTextUpdate()
+    {
+        GameManager.Instance.MainStageScoreTextUpdate(currentScoreTxt, bestScoreTxt);
+    }
     #endregion
 }

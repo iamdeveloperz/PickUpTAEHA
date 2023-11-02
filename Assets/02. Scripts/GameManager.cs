@@ -20,7 +20,6 @@ public class GameManager : SingletonMonoBase<GameManager>
     #region Properties
     public float GameTime { get { return gameTime; } set { gameTime = value; } }
     public DIFFICULTY Difficulty { get { return diff; } set { diff = value; } }
-    public GameObject GameoverPanel { get { return gameoverPanel; } }
     public bool IsVictory { get { return isVictory; } }
     public bool IsAlive { get { return isAlive; } set { isAlive = value; } }
     public int CurrentScore { get { return currentScore; } set { currentScore = value; } }
@@ -40,6 +39,8 @@ public class GameManager : SingletonMonoBase<GameManager>
     public GameObject secondCard;
 
     private GameObject gameoverPanel;
+    private GameObject gamevictoryPanel;
+    public GameObject gameEndBG;
     private TMP_Text tryTxt;
 
     private GameObject minusCount;
@@ -48,12 +49,10 @@ public class GameManager : SingletonMonoBase<GameManager>
     private bool isAlive = true;
     private int currentScore;   // 현재 점수
     private int bestScore;       // 최고 점수
-    public TMP_Text currentScoreTxt;
-    public TMP_Text bestScoreTxt;
 
 
     // 점수 세팅 변수
-    public const int cardScore = 5;     // 카드 매치 시 얻을 점수
+    public int cardScore;     // 카드 매치 시 얻을 점수
     public const int timeMultiple = 3;  // 남은 시간 점수 환산시 곱할 배수
     public int difficultyBasicScore;      // 난이도별 기본 점수
 
@@ -66,11 +65,9 @@ public class GameManager : SingletonMonoBase<GameManager>
         public void GameOver()
     {
         isAlive = false;
-        Debug.Log(currentScore);
         savedScore();
+        gameEndBG.SetActive(true);
         StartCoroutine(OnGameOverPanel());
-        // gameTryCount = 0;
-        // Time.timeScale = 0f;
     }
 
     public void GameVictory()
@@ -79,7 +76,8 @@ public class GameManager : SingletonMonoBase<GameManager>
         isVictory = false;
         this.VictoryScoreCalculate();
         savedScore();
-        StartCoroutine(OnGameOverPanel());
+        gameEndBG.SetActive(true);
+        StartCoroutine(OnGameVictoryPanel());
     }
 
     public void CardMatched()
@@ -158,9 +156,7 @@ public class GameManager : SingletonMonoBase<GameManager>
     public void savedScore()
     {
         if (PlayerPrefs.HasKey("bestScore") == false)
-        {
             PlayerPrefs.SetInt("bestScore", currentScore);
-        }
         else
         {
             if (PlayerPrefs.GetInt("bestScore") < currentScore)
@@ -168,7 +164,14 @@ public class GameManager : SingletonMonoBase<GameManager>
                 PlayerPrefs.SetInt("bestScore", currentScore);
             }
         }
-        bestScoreTxt.text = PlayerPrefs.GetInt("bestScore").ToString();
+    }
+
+    public void loadScore()
+    {
+        if (PlayerPrefs.HasKey("bestScore") == false)
+            PlayerPrefs.SetInt("bestScore", 0);
+        else
+            bestScore = PlayerPrefs.GetInt("bestScore");
     }
 
     public void Minus()
@@ -178,6 +181,7 @@ public class GameManager : SingletonMonoBase<GameManager>
         Destroy(minusTxt, 1.0f);
     }
     #endregion
+
     #region Sub Methods
     public void SettingCards(GameObject cards)
     {
@@ -196,6 +200,12 @@ public class GameManager : SingletonMonoBase<GameManager>
             gameoverPanel = overPanel;
     }
 
+    public void SettingGameVictoryPanel(GameObject victoryPanel)
+    {
+        if (gamevictoryPanel == null)
+            gamevictoryPanel = victoryPanel;
+    }
+
     public void SettingTryText(TMP_Text tryText)
     {
         if (tryTxt == null)
@@ -209,9 +219,47 @@ public class GameManager : SingletonMonoBase<GameManager>
 
     private IEnumerator OnGameOverPanel()
     {
+        TMP_Text curScore = gameoverPanel.transform.GetChild(0).GetChild(0).GetComponent<TMP_Text>();
+        TMP_Text bstScore = gameoverPanel.transform.GetChild(1).GetChild(0).GetComponent<TMP_Text>();
+
+        loadScore();
+
+        curScore.text = currentScore.ToString();
+        bstScore.text = bestScore.ToString();
+
         yield return new WaitForSeconds(lerpTimeValue);
 
         gameoverPanel.SetActive(true);
+    }
+
+    private IEnumerator OnGameVictoryPanel()
+    {
+        TMP_Text curScore = gamevictoryPanel.transform.GetChild(0).GetChild(0).GetComponent<TMP_Text>();
+        TMP_Text bstScore = gamevictoryPanel.transform.GetChild(1).GetChild(0).GetComponent<TMP_Text>();
+
+        loadScore();
+
+        curScore.text = currentScore.ToString();
+        bstScore.text = bestScore.ToString();
+        Debug.Log(curScore.text);
+
+        yield return new WaitForSeconds(lerpTimeValue);
+
+        gamevictoryPanel.SetActive(true);
+    }
+
+    public void MainStageScoreTextUpdate(TMP_Text curSText, TMP_Text bestSText)
+    {
+        if (this.bestScore < currentScore)
+        {
+            bestSText.text = currentScore.ToString();
+            curSText.text = currentScore.ToString();
+        }
+        else
+        {
+            bestSText.text = bestScore.ToString();
+            curSText.text = currentScore.ToString();
+        }
     }
 
     public void MinusCount(GameObject minusCountPrefab)

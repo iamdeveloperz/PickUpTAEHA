@@ -8,13 +8,11 @@ public class sceneManager : MonoBehaviour
 
     public void Retry()
     {
-        GameManager.Instance.GameoverPanel.SetActive(false);
         SceneManager.LoadScene(1);
     }
 
     public void GoTitle()
     {
-        GameManager.Instance.GameoverPanel.SetActive(false);
         SceneManager.LoadScene(0);
     }
 }
