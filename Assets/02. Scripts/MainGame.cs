@@ -61,11 +61,13 @@ public class MainGame : MonoBehaviour
             {
                 GameManager.Instance.GameTime -= Time.deltaTime;
                 timeTxt.text = GameManager.Instance.GameTime.ToString("N2");
+                this.ScoreTextUpdate();
                 if (GameManager.Instance.GameTime <= 0)
                 {
                     GameManager.Instance.GameTime = 0f;
                     GameManager.Instance.GameOver();
                     timeTxt.text = GameManager.Instance.GameTime.ToString("N2");
+                    //this.ScoreTextUpdate();
                 }
             }
         }
